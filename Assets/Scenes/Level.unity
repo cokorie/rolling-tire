@@ -646,9 +646,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a0efdd4c69dc424ea90b9052a48547b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forwardSpeed: 5
+  forwardSpeed: 6
   laneDistance: 2
-  jumpForce: 12
+  jumpForce: 10.5
   Gravity: -20
 --- !u!136 &1244840574
 CapsuleCollider:
