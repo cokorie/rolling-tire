@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -9,8 +7,11 @@ public class PlayerController : MonoBehaviour
     public float forwardSpeed;
 
     private int desiredLane = 1; // 1 for middle lane
-    public float laneDistance = 4;
+    public float laneDistance = 2.5f;
 
+    public bool isGrounded;
+    public LayerMask groundLayer;
+    public Transform groundCheck;
 
     public float jumpForce;
     public float Gravity = -20;
@@ -26,10 +27,13 @@ public class PlayerController : MonoBehaviour
     {
         direction.z = forwardSpeed;
 
+        isGrounded = Physics.CheckSphere(groundCheck.position, 0.15f, groundLayer);
+
         if(controller.isGrounded)
         {
-            direction.y = -1;
-            if(Input.GetKeyDown(KeyCode.UpArrow))
+            direction.y = -2;
+            // if(Input.GetKeyDown(KeyCode.UpArrow))
+            if(SwipeManager.swipeUp)
             {
                 Jump();
             }
@@ -38,14 +42,16 @@ public class PlayerController : MonoBehaviour
             direction.y += Gravity * Time.deltaTime;
         }
 
-        if(Input.GetKeyDown(KeyCode.RightArrow))
+        // if(Input.GetKeyDown(KeyCode.RightArrow))
+        if(SwipeManager.swipeRight)
         {
             desiredLane++;
             if(desiredLane == 3)
                 desiredLane = 2;
         }
 
-        if(Input.GetKeyDown(KeyCode.LeftArrow))
+        // if(Input.GetKeyDown(KeyCode.LeftArrow))
+        if(SwipeManager.swipeLeft)
         {
             desiredLane--;
             if(desiredLane == -1)
@@ -67,7 +73,7 @@ public class PlayerController : MonoBehaviour
         return;
     Vector3 diff = targetPosition - transform.position;
     Vector3 moveDir = diff.normalized * 25 * Time.deltaTime;
-    if (moveDir.sqrMagnitude < diff.sqrMagnitude)
+    if (moveDir.sqrMagnitude < diff.magnitude)
         controller.Move(moveDir);
     else
         controller.Move(diff);    

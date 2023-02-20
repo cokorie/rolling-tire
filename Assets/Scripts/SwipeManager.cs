@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SwipeManager : MonoBehaviour
@@ -42,28 +40,42 @@ public class SwipeManager : MonoBehaviour
         }
         #endregion
 
+        //Calculate the distance
         swipeDelta = Vector2.zero;
         if (isDraging)
         {
-            if (Input.touch.Length < 0)
+            if (Input.touches.Length < 0)
                 swipeDelta = Input.touches[0].position - startTouch;
             else if (Input.GetMouseButton(0))
                 swipeDelta = (Vector2)Input.mousePosition - startTouch;
         }
 
+        //Did we cross the distance?
         if (swipeDelta.magnitude > 125)
         {
+            //Which direction?
             float x = swipeDelta.x;
             float y = swipeDelta.y;
             if (Mathf.Abs(x) > Mathf.Abs(y))
             {
+                //Left or Right
                 if (x < 0)
                     swipeLeft = true;
                 else
+                    swipeRight = true;
+            }
+            else
+            {
+                //Up or Down
+                if (y < 0)
+                    swipeDown = true;
+                else
                     swipeUp = true;
             }
+
             Reset();
         }
+
     }
 
     private void Reset()
