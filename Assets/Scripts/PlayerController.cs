@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -5,6 +6,7 @@ public class PlayerController : MonoBehaviour
     private CharacterController controller;
     private Vector3 direction;
     public float forwardSpeed;
+    public float maxSpeed;
 
     private int desiredLane = 1; // 1 for middle lane
     public float laneDistance = 2.5f;
@@ -17,6 +19,7 @@ public class PlayerController : MonoBehaviour
     public float Gravity = -20;
 
     public Animator animator;
+    private bool isSliding = false;
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +32,10 @@ public class PlayerController : MonoBehaviour
     {
         if (!PlayerManager.isGameStarted)
             return;
+
+        // Increases speed
+        if (forwardSpeed < maxSpeed)
+            forwardSpeed += 0.1f * Time.deltaTime;
 
         animator.SetBool("isGameStarted", true);
         direction.z = forwardSpeed;
@@ -47,6 +54,11 @@ public class PlayerController : MonoBehaviour
         } else
         {
             direction.y += Gravity * Time.deltaTime;
+        }
+
+        if (SwipeManager.swipeDown && !isSliding)
+        {
+            StartCoroutine(Slide());
         }
 
         // if(Input.GetKeyDown(KeyCode.RightArrow))
@@ -105,5 +117,20 @@ public class PlayerController : MonoBehaviour
         {
             PlayerManager.gameOver = true;
         }
+    }
+
+    private IEnumerator Slide()
+    {
+        isSliding = true;
+        animator.SetBool("isSliding", true);
+        controller.center = new Vector3(0, -0.5f, 0);
+        controller.height = 1;
+
+        yield return new WaitForSeconds(1.3f);
+        
+        controller.center = new Vector3(0, 0, 0);
+        controller.height = 2;
+        animator.SetBool("isSliding", false);
+        isSliding = false;
     }
 }
