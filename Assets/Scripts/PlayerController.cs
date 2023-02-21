@@ -16,6 +16,8 @@ public class PlayerController : MonoBehaviour
     public float jumpForce;
     public float Gravity = -20;
 
+    public Animator animator;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,15 +30,17 @@ public class PlayerController : MonoBehaviour
         if (!PlayerManager.isGameStarted)
             return;
 
+        animator.SetBool("isGameStarted", true);
         direction.z = forwardSpeed;
 
         isGrounded = Physics.CheckSphere(groundCheck.position, 0.15f, groundLayer);
+        animator.SetBool("isGrounded", isGrounded);
 
         if(controller.isGrounded)
         {
             direction.y = -2;
             // if(Input.GetKeyDown(KeyCode.UpArrow))
-            if(SwipeManager.swipeUp)
+            if(SwipeManager.swipeUp && Input.GetKeyDown(KeyCode.UpArrow))
             {
                 Jump();
             }
@@ -46,7 +50,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // if(Input.GetKeyDown(KeyCode.RightArrow))
-        if(SwipeManager.swipeRight)
+        if(SwipeManager.swipeRight && Input.GetKeyDown(KeyCode.UpArrow))
         {
             desiredLane++;
             if(desiredLane == 3)
@@ -54,7 +58,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // if(Input.GetKeyDown(KeyCode.LeftArrow))
-        if(SwipeManager.swipeLeft)
+        if(SwipeManager.swipeLeft && Input.GetKeyDown(KeyCode.UpArrow))
         {
             desiredLane--;
             if(desiredLane == -1)
