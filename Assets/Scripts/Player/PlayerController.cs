@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     public Transform groundCheck;
 
     public float jumpForce;
-    public float Gravity = -20;
+    public float gravity = -12f;
 
     public Animator animator;
     private bool isSliding = false;
@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour
             }
         } else
         {
-            direction.y += Gravity * Time.deltaTime;
+            direction.y += gravity * Time.deltaTime;
         }
 
         if (SwipeManager.swipeDown && !isSliding)
