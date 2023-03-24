@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour
 {
     private CharacterController controller;
     private Vector3 direction;
+    private Vector3 move;
     public float forwardSpeed;
     public float maxSpeed;
 
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour
 
     public float jumpForce;
     public float gravity = -12f;
+    public Vector3 velocity;
 
     public Animator animator;
     private bool isSliding = false;
@@ -33,72 +35,96 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!PlayerManager.isGameStarted)
+        if (!PlayerManager.isGameStarted || PlayerManager.gameOver)
             return;
 
+
         // Increases speed
-        if (forwardSpeed < maxSpeed)
-            forwardSpeed += 0.1f * Time.deltaTime;
+        // if (forwardSpeed < maxSpeed)
+        //     forwardSpeed += 0.1f * Time.deltaTime;
 
         animator.SetBool("isGameStarted", true);
-        direction.z = forwardSpeed;
+        move.z = forwardSpeed;
 
-        isGrounded = Physics.CheckSphere(groundCheck.position, 0.15f, groundLayer);
+        isGrounded = Physics.CheckSphere(groundCheck.position, 0.17f, groundLayer);
         animator.SetBool("isGrounded", isGrounded);
+        if (isGrounded && velocity.y < 0)
+            velocity.y = -1f;
 
-        if(controller.isGrounded)
+        if (isGrounded)
         {
-            direction.y = -2;
             // if(Input.GetKeyDown(KeyCode.UpArrow))
-            if(SwipeManager.swipeUp && Input.GetKeyDown(KeyCode.UpArrow))
-            {
+            if (SwipeManager.swipeUp)
                 Jump();
-            }
+
+            if (SwipeManager.swipeDown && !isSliding)
+                StartCoroutine(Slide());
         } else
         {
-            direction.y += gravity * Time.deltaTime;
+            velocity.y += gravity * TileManager.deltaTime;
+            if (SwipeManager.swipeDown && !isSliding)
+            {
+                StartCoroutine(Slide());
+                velocity.y = -10;
+            }
         }
-
-        if (SwipeManager.swipeDown && !isSliding)
-        {
-            StartCoroutine(Slide());
-        }
-
-        // if(Input.GetKeyDown(KeyCode.RightArrow))
-        if(SwipeManager.swipeRight && Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            desiredLane++;
-            if(desiredLane == 3)
-                desiredLane = 2;
-        }
-
-        // if(Input.GetKeyDown(KeyCode.LeftArrow))
-        if(SwipeManager.swipeLeft && Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            desiredLane--;
-            if(desiredLane == -1)
-                desiredLane = 0;
-        }
+        controller.Move(velocity * Time.deltaTime);
 
 
-        Vector3 targetPosition = transform.position.z * transform.forward + transform.position.y * transform.up;
+
+    //     if(controller.isGrounded)
+    //     {
+    //         direction.y = -2;
+    //         // if(Input.GetKeyDown(KeyCode.UpArrow))
+    //         if(SwipeManager.swipeUp && Input.GetKeyDown(KeyCode.UpArrow))
+    //         {
+    //             Jump();
+    //         }
+    //     } else
+    //     {
+    //         direction.y += gravity * Time.deltaTime;
+    //     }
+
+    //     if (SwipeManager.swipeDown && !isSliding)
+    //     {
+    //         StartCoroutine(Slide());
+    //     }
+
+    //     // if(Input.GetKeyDown(KeyCode.RightArrow))
+    //     if(SwipeManager.swipeRight && Input.GetKeyDown(KeyCode.UpArrow))
+    //     {
+    //         desiredLane++;
+    //         if(desiredLane == 3)
+    //             desiredLane = 2;
+    //     }
+
+    //     // if(Input.GetKeyDown(KeyCode.LeftArrow))
+    //     if(SwipeManager.swipeLeft && Input.GetKeyDown(KeyCode.UpArrow))
+    //     {
+    //         desiredLane--;
+    //         if(desiredLane == -1)
+    //             desiredLane = 0;
+    //     }
+
+
+    //     Vector3 targetPosition = transform.position.z * transform.forward + transform.position.y * transform.up;
     
-        if (desiredLane == 0)
-        {
-            targetPosition += Vector3.left * laneDistance;
-        } else if (desiredLane == 2)
-        {
-            targetPosition += Vector3.right * laneDistance;
-        }
+    //     if (desiredLane == 0)
+    //     {
+    //         targetPosition += Vector3.left * laneDistance;
+    //     } else if (desiredLane == 2)
+    //     {
+    //         targetPosition += Vector3.right * laneDistance;
+    //     }
 
-    if (transform.position == targetPosition)
-        return;
-    Vector3 diff = targetPosition - transform.position;
-    Vector3 moveDir = diff.normalized * 25 * Time.deltaTime;
-    if (moveDir.sqrMagnitude < diff.magnitude)
-        controller.Move(moveDir);
-    else
-        controller.Move(diff);    
+    // if (transform.position == targetPosition)
+    //     return;
+    // Vector3 diff = targetPosition - transform.position;
+    // Vector3 moveDir = diff.normalized * 25 * Time.deltaTime;
+    // if (moveDir.sqrMagnitude < diff.magnitude)
+    //     controller.Move(moveDir);
+    // else
+    //     controller.Move(diff);
     }
 
     private void FixedUpdate()
