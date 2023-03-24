@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
     public Animator animator;
     private bool isSliding = false;
 
+    bool toggle = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -104,7 +106,18 @@ public class PlayerController : MonoBehaviour
         if (!PlayerManager.isGameStarted || PlayerManager.gameOver)
             return;
 
-        controller.Move(direction * Time.fixedDeltaTime);
+        if (toggle)
+        {
+            toggle = false;
+            if (forwardSpeed < maxSpeed)
+                forwardSpeed += 0.1f * TileManager.fixedDeltaTime;
+        }
+        else
+        {
+            toggle = true;
+            if (Time.timeScale < 2f)
+                TileManager.timeScale += 0.005f * Time.fixedDeltaTime;
+        }
     } 
 
     private void Jump()
