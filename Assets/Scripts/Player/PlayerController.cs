@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     public Transform groundCheck;
 
     public float jumpForce;
-    public float gravity = -6f;
+    public float gravity = -12f;
     public Vector3 velocity;
 
     public Animator animator;
