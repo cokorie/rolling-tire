@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("isGameStarted", true);
         move.z = forwardSpeed;
 
-        isGrounded = Physics.CheckSphere(groundCheck.position, 0.17f, groundLayer);
+        isGrounded = Physics.CheckSphere(groundCheck.position, 0.51f, groundLayer);
         animator.SetBool("isGrounded", isGrounded);
         if (isGrounded && velocity.y < 0)
             velocity.y = -1f;
