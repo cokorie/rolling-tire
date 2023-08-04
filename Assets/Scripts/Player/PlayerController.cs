@@ -167,7 +167,7 @@ public class PlayerController : MonoBehaviour
         controller.center = new Vector3(0, -0.5f, 0);
         controller.height = 1;
 
-        yield return new WaitForSeconds(1.2f);
+        yield return new WaitForSeconds(1.3f);
         
         controller.center = new Vector3(0, 0, 0);
         controller.height = 2;
