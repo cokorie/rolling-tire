@@ -169,7 +169,7 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(1.3f);
         
-        controller.center = new Vector3(1, 1, 1);
+        controller.center = new Vector3(0, 0, 0);
         controller.height = 2;
         animator.SetBool("isSliding", false);
         isSliding = false;
