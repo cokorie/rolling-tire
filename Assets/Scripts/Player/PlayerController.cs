@@ -136,7 +136,7 @@ public class PlayerController : MonoBehaviour
         {
             toggle = false;
             if (forwardSpeed < maxSpeed)
-                forwardSpeed += 0.1f * TileManager.fixedDeltaTime;
+                forwardSpeed += 0.2f * TileManager.fixedDeltaTime;
         }
         else
         {
