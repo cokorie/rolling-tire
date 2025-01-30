@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
-        Time.timeScale = 1.2f;
+        Time.timeScale = 1.8f;
     }
 
     // Update is called once per frame
