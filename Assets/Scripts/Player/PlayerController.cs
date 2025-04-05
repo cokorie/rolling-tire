@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     public float forwardSpeed;
     public float maxSpeed;
 
-    private int desiredLane = 1; // 1 for middle lane
+    private int desiredLane = 2; // 1 for middle lane
     public float laneDistance = 2.5f;
 
     public bool isGrounded;
