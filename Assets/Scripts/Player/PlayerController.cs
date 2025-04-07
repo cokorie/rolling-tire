@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour
         isGrounded = Physics.CheckSphere(groundCheck.position, 0.17f, groundLayer);
         animator.SetBool("isGrounded", isGrounded);
         if (isGrounded && velocity.y < 0)
-            velocity.y = -1f;
+            velocity.y = -2f;
 
         if (isGrounded)
         {
