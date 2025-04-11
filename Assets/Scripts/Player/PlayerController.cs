@@ -74,7 +74,7 @@ public class PlayerController : MonoBehaviour
 
     //     if(controller.isGrounded)
     //     {
-    //         direction.y = -;
+    //         direction.y = -2;
     //         // if(Input.GetKeyDown(KeyCode.UpArrow))
     //         if(SwipeManager.swipeUp && Input.GetKeyDown(KeyCode.UpArrow))
     //         {
