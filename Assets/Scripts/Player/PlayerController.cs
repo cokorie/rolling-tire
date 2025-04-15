@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
             if (SwipeManager.swipeDown && !isSliding)
             {
                 StartCoroutine(Slide());
-                velocity.y = -5;
+                velocity.y = -10;
             }
         }
         controller.Move(velocity * Time.deltaTime);
