@@ -141,7 +141,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             toggle = true;
-            if (Time.timeScale < 2f)
+            if (Time.timeScale < 4f)
                 TileManager.timeScale += 0.005f * Time.fixedDeltaTime;
         }
     } 
